@@ -15,13 +15,12 @@
     key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
 - name: set Elasticsearch Yum repository
-  yum_repository:
-    name: Elasticsearch repository for 5.x packages
-    description: Elasticsearch YUM repo
-    baseurl: https://artifacts.elastic.co/packages/5.x/yum
-    gpgcheck: 1
-    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    enabled: 1
+  template:
+    src: elasticsearch_repo
+    dest: /etc/yum.repos.d/elasticsearch.repo
+    owner: root
+    group: root
+    mode: 0644
 
 - name: Install Elasticsearch
   include: elasticsearch.yml
