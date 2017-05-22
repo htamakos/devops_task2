@@ -1,0 +1,20 @@
+---
+- name: install Elasticsearch
+  yum:
+    name: elasticsearch
+    state: present
+
+- name: set Elasticsearch config
+  template:
+    src: elasticsearch_conf.yml
+    dest: /etc/elasticsearch/elasticsearch.yml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart elasticsearch
+
+- name: Start Elasticsearch
+  service:
+    name: elasticsearch
+    state: started
+    enabled: yes

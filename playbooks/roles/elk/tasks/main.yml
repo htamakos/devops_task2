@@ -1,0 +1,33 @@
+---
+- name: install initscripts
+  yum:
+    name: initscripts
+    state: present
+
+- name: Install Java 1.8
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+
+- name: Import Elasticsearch PGP key
+  rpm_key:
+    state: present
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: set Elasticsearch Yum repository
+  yum_repository:
+    name: Elasticsearch repository for 5.x packages
+    description: Elasticsearch YUM repo
+    baseurl: https://artifacts.elastic.co/packages/5.x/yum
+    gpgcheck: 1
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    enabled: 1
+
+- name: Install Elasticsearch
+  include: elasticsearch.yml
+
+- name: Install Logstash
+  include: Logstash.yml
+
+- name: Install Kibana
+  include: kibana.yml

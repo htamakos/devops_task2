@@ -1,0 +1,50 @@
+---
+- name: install Logstash
+  yum:
+    name: logstash
+    state: present
+
+- name: delete logstash upstart script
+  file:
+    path: /etc/init/logstash.conf
+    state: absent
+
+- name: set Logstash conf
+  template:
+    src: logstash_conf
+    dest: /etc/logstash/conf.d/tomcat.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: create /opt/logstash dir
+  file:
+    path: /opt/logstash
+    state: directory
+    owner: root
+    group: root
+    mode: 0644
+
+- name: set logstash pattern file
+  template:
+    src: logstash_pattern
+    dest: /opt/logstash/patterns
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart logstash
+
+- name: set logstash init script
+  template:
+    src: logstash_init_script
+    dest: /etc/init.d/logstash
+    owner: root
+    group: root
+    mode: 0744
+  notify: restart logstash
+
+- name: Start Logstash
+  service:
+    name: logstash
+    state: started
+    enabled: yes
