@@ -1,0 +1,21 @@
+input {
+  tcp {
+    type => "tomcat"
+    port => 3335
+    add_field => { "server" => "prod" }
+  }
+}
+
+filter {
+  multiline {
+    patterns_dir => "/Users/lanyonm/logstash/patterns"
+    pattern => "(^%{TOMCAT_DATESTAMP})|(^%{CATALINA_DATESTAMP})"
+    negate => true
+    what => "previous"
+  }
+}
+
+output {
+  elasticsearch { host => localhost }
+  stdout { codec => rubydebug }
+}
