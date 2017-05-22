@@ -1,0 +1,3 @@
+http_proxy: http://jp-proxy.jp.oracle.com:80
+http_proxys: http://jp-proxy.jp.oracle.com:80
+no_proxy: "localhost, 127.0.0.1, 0.0.0.0"
